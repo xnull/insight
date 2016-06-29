@@ -1,5 +1,7 @@
 Имеется 2 списка с элеметами необходимо найти первый элемент из первого списка который также содержится во втором списке.
 
+It's required to go throught list1 and find the first occurence in the list2 from list1
+
 ## Functional way to find first occurence
 
 
