@@ -5,7 +5,7 @@ import scala.annotation.tailrec
 /**
   * Created by bynull on 30.06.16.
   */
-object FunctionalSearch {
+object ScalaFunctionalSearch {
 
   /**
     * Functional search in scala

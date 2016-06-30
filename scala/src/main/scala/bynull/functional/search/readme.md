@@ -1,40 +1,16 @@
-Имеется 2 списка с элеметами необходимо найти первый элемент из первого списка который также содержится во втором списке.
-
-## Functional way to find first occurence
-
+### Functional and procedural ways to search first occurrence in the lists.
 
 ###### The task
-Имеется 2 списка с элеметами необходимо найти первый элемент из первого списка который также содержится во втором списке.
-Let's suppose that there are two lists of elements. It's required to find first occurence in second list.  
-
+Let's suppose that there are two groups of people. A man maybe in both groups. 
+It's needed to find the first man from the first group who is in the second group too. 
 
 ###### Algorithm
-Go through the first list and find first occurence in the second list.
-
+Given two lists, it's required to find the first element from the first list which is contained in the second list.
+We need to go through the first list until the first occurrence of the element in the second list.
 
 #### Java:
-```
-public Optional<BlacklistEntity> find(String identValue, IdentType identType) {
-        Set<Long> linkedIdentIds = identService.findAllLinkedIdentIds(identValue, identType);
-        for (Long linkedIdentId : linkedIdentIds) {
-            BlacklistEntity bl = blacklistRepo.findByIdentId(linkedIdentId);
-            if (bl != null) {
-                return Optional.of(bl);
-            }
-        }
-```
-
+[Search with Java](JavaSearch.java)
 
 #### Scala: 
-```@tailrec
-  private def findBl(linkedIdentIds: Seq[Long]): Option[Blacklist] = {
-    linkedIdentIds match {
-      case linkedIdentId :: tail =>
-        blacklistRepo.findByIdentId(linkedIdentId) match {
-          case bl@Some(x) => bl
-          case None => findBl(tail)
-        }
-      case Nil => None
-    }
-  }
-```
+[Functional search with scala](ScalaFunctionalSearch.scala)
+[Procedural search with scala](ScalaProceduralSearch.scala)

@@ -14,7 +14,7 @@ object SearchApp extends App {
   val secondGroup = Seq(bill, andrey)
 
   println("Functional search!")
-  println("Result: " + FunctionalSearch.search(firstGroup, secondGroup).get)
+  println("Result: " + ScalaFunctionalSearch.search(firstGroup, secondGroup).get)
 
   println
 
