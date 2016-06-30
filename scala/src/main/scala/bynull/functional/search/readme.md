@@ -8,6 +8,8 @@ It's needed to find the first man from the first group who is in the second grou
 Given two lists, it's required to find the first element from the first list which is contained in the second list.
 We need to go through the first list until the first occurrence of the element in the second list.
 
+**[Main class which runs all the examples](SearchApp.scala)**
+
 #### Java
 
 ```java
@@ -60,5 +62,3 @@ for (Man manFromFirstGroup : firstGroup) {
 
 * [Functional search with scala](ScalaFunctionalSearch.scala) full code example
 * [Procedural search with scala](ScalaProceduralSearch.scala) full code example
-
-[Main class which runs all the examples](SearchApp.scala)
