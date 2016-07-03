@@ -1,7 +1,6 @@
 package bynull.functional.zip;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -9,6 +8,8 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * https://habrahabr.ru/post/256905/
@@ -26,8 +27,6 @@ public class FunctionalZip {
             requests.skip(1);
             requests.findFirst();
         };*/
-
-        //IntStream.range(1,1).
 
         //Stream.iterate(new Pair<>(request, response), streamStreamPair -> null).ma;
 
@@ -57,12 +56,29 @@ public class FunctionalZip {
         //http://www.programcreek.com/2014/01/create-stream-in-java-8/
         //https://habrahabr.ru/post/256905/
 
-        Stream<Pair<String, String>> res = Stream
-                .generate(() -> init.apply(new Pair<>(request, response)))
-                //.map(decr -> decr.)
-                .limit(requestList.size());
+        Stream.of(new Pair<>(new ArrayList<>(requestList), new ArrayList<>(responseList)))
+                .flatMap(reqRespPair -> IntStream
+                        .range(0, requestList.size())
+                        .boxed()
+                        .map(idx -> new Pair<>(reqRespPair.key.get(idx), reqRespPair.value.get(idx)))
+                );
 
-        res.forEach(System.out::println);
+        Spliterators.
+
+                //indexedReqResp.collect(collectingAndThen(groupingBy(x -> x.key), tt -> null));
+
+
+                        IntStream.range(0, requestList.size())
+                .boxed()
+                .map(index -> new Pair<>(index, requestList.get(index)));
+
+
+        new BiFunction<Queue<String>, Queue<String>, Pair<String, String>>() {
+            @Override
+            public Pair<String, String> apply(Queue<String> requests, Queue<String> responses) {
+                return reqRespMapper.apply(requests.poll(), responses.poll());
+            }
+        };
 
         Stream<IndexedPair<String, String>> requestResponseStream = Stream.iterate(
                 IndexedPair.get(0, requestList.get(0), responseList.get(0)),
@@ -70,10 +86,6 @@ public class FunctionalZip {
         ).limit(requestList.size());
 
         //requestResponseStream.forEach(System.out::println);
-    }
-
-    public static <T, U, R> Function<U, R> partial(BiFunction<T, U, R> f, T x) {
-        return (y) -> f.apply(x, y);
     }
 
     public static class Pair<K, V> {
