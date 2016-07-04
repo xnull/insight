@@ -1,15 +1,13 @@
 package bynull.functional.zip;
 
+import bynull.functional.Common;
+import bynull.functional.Common.Tuple2;
+
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.*;
 
 /**
  * https://habrahabr.ru/post/256905/
@@ -28,26 +26,26 @@ public class FunctionalZip {
             requests.findFirst();
         };*/
 
-        //Stream.iterate(new Pair<>(request, response), streamStreamPair -> null).ma;
+        //Stream.iterate(new Tuple2<>(request, response), streamStreamPair -> null).ma;
 
-        //Stream.of(new Pair<>(request, response)).
+        //Stream.of(new Tuple2<>(request, response)).
 
 
-        BiFunction<String, String, Pair<String, String>> reqRespMapper = Pair::new;
+        BiFunction<String, String, Common.Tuple2<String, String>> reqRespMapper = Common.Tuple2::of;
 
-        BiFunction<Stream<String>, Stream<String>, Pair<String, String>> extractor =
+        BiFunction<Stream<String>, Stream<String>, Common.Tuple2<String, String>> extractor =
                 (requests, responses) -> {
                     System.out.println("Extractor iteration");
                     return reqRespMapper.apply(requests.findFirst().get(), responses.findFirst().get());
                 };
 
-        BiFunction<Stream<String>, Stream<String>, Pair<String, String>> decrement =
+        BiFunction<Stream<String>, Stream<String>, Common.Tuple2<String, String>> decrement =
                 (requests, responses) -> {
                     System.out.println("Decrement iteration");
                     return reqRespMapper.apply(requests.skip(1).findFirst().get(), responses.skip(1).findFirst().get());
                 };
 
-        Function<Pair<Stream<String>, Stream<String>>, BiFunction<Stream<String>, Stream<String>, Pair<String, String>>> init =
+        Function<Common.Tuple2<Stream<String>, Stream<String>>, BiFunction<Stream<String>, Stream<String>, Common.Tuple2<String, String>>> init =
                 input -> decrement;
 
         Stream<String> response = responseList.stream();
@@ -56,26 +54,25 @@ public class FunctionalZip {
         //http://www.programcreek.com/2014/01/create-stream-in-java-8/
         //https://habrahabr.ru/post/256905/
 
-        Stream.of(new Pair<>(new ArrayList<>(requestList), new ArrayList<>(responseList)))
-                .flatMap(reqRespPair -> IntStream
+        Stream.of(Tuple2.of(new ArrayList<>(requestList), new ArrayList<>(responseList)))
+                .flatMap(reqRespTuple2 -> IntStream
                         .range(0, requestList.size())
                         .boxed()
-                        .map(idx -> new Pair<>(reqRespPair.key.get(idx), reqRespPair.value.get(idx)))
+                        .map(idx -> Tuple2.of(reqRespTuple2.v1.get(idx), reqRespTuple2.v2.get(idx)))
                 );
 
-        Spliterators.
 
-                //indexedReqResp.collect(collectingAndThen(groupingBy(x -> x.key), tt -> null));
+        //indexedReqResp.collect(collectingAndThen(groupingBy(x -> x.key), tt -> null));
 
 
-                        IntStream.range(0, requestList.size())
+        IntStream.range(0, requestList.size())
                 .boxed()
-                .map(index -> new Pair<>(index, requestList.get(index)));
+                .map(index -> Tuple2.of(index, requestList.get(index)));
 
 
-        new BiFunction<Queue<String>, Queue<String>, Pair<String, String>>() {
+        new BiFunction<Queue<String>, Queue<String>, Common.Tuple2<String, String>>() {
             @Override
-            public Pair<String, String> apply(Queue<String> requests, Queue<String> responses) {
+            public Common.Tuple2<String, String> apply(Queue<String> requests, Queue<String> responses) {
                 return reqRespMapper.apply(requests.poll(), responses.poll());
             }
         };
@@ -86,24 +83,6 @@ public class FunctionalZip {
         ).limit(requestList.size());
 
         //requestResponseStream.forEach(System.out::println);
-    }
-
-    public static class Pair<K, V> {
-        K key;
-        V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return "Pair{" +
-                    "key=" + key +
-                    ", value=" + value +
-                    '}';
-        }
     }
 
     public static class IndexedPair<Left, Right> {
@@ -123,7 +102,7 @@ public class FunctionalZip {
 
         @Override
         public String toString() {
-            return "IndexedPair{index=" + index + ", left=" + left + ", right=" + right + '}';
+            return "IndexedPair{index=" + index + ", v1=" + left + ", v2=" + right + '}';
         }
     }
 }
