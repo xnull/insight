@@ -27,7 +27,7 @@ public class StreamTips {
 
     public Stream<Tuple2<Integer, String>> withIndex(Stream<String> input) {
         AtomicInteger index = new AtomicInteger();
-        return input.map(value -> Tuple2.of(index.getAndIncrement(), value));
+        return input.sequential().map(value -> Tuple2.of(index.getAndIncrement(), value));
     }
 
     public static <T> Stream<T> makeCollectionVisibilityStreamPrivate(List<T> list) {
