@@ -19,7 +19,7 @@ Each article solves a certain issue, it's contained in a separate package (i.e o
 
 #### Algorithms
 * **Scala**
-    * ! 
+    * [Buble sort](scala/src/main/scala/bynull/algorithms/sort/bubble/BubbleSort.scala)
 
 * **Java**
     * [Buble sort](java/src/main/java/bynull/algorithms/sort/buble)
